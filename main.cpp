@@ -3,6 +3,7 @@
 #include <fstream>
 #include <chrono>
 //#include <thread>
+using namespace std;
 double current,previous = 0.0;
 double interval = 1.0;
 
@@ -10,6 +11,13 @@ double interval = 1.0;
 int main()
 {
     
+    fstream plikZapis;
+    plikZapis.open("plik.csv",ios::out | ios::trunc);
+            if (plikZapis.is_open())
+            {
+                plikZapis << "TIME" << "\n";
+                plikZapis.close();
+            } else return -1;
     
     std::chrono::duration<double> elapsed_seconds;
     auto start = std::chrono::high_resolution_clock::now();
@@ -23,7 +31,18 @@ int main()
         
         if (current - previous >= interval)
         {
+            //wykonuj operacje co interval
             printf("\a");
+            plikZapis.open("plik.csv",ios::app);
+            if (plikZapis.is_open())
+            {
+                plikZapis << current << "\n";
+                plikZapis.close();
+            }
+            
+            
+            
+            
             previous = current;
         }
     }
